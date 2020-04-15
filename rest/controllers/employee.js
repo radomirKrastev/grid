@@ -14,6 +14,15 @@ module.exports = {
       models.Employee.find({ department: `${criterion}` })
         .then((employees) => res.send(employees))
         .catch(next);
+    },
+    remove: (req, res, next) => {
+      const { id } = req.body;
+
+      models.Employee.deleteOne({ id: `${id}` })
+        .then((result) => {
+          res.send(result);
+        })
+        .catch(next);
     }
   }
 };

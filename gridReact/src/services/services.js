@@ -10,10 +10,16 @@ const employeeService = {
         "Content-type": "application/json"
       }
     }).then((res) => res.json());
+  },
+  remove: function(criterion) {
+    return fetch(`http://localhost:9999/remove`, {
+      body: JSON.stringify(criterion),
+      method: "POST",
+      headers: {
+        "Content-type": "application/json"
+      }
+    }).then((res) => res.json());
   }
-  //   filter: function() {
-  //     return fetch(`http://localhost:9999/filter`).then((res) => res.json());
-  //   }
 };
 
 export default employeeService;

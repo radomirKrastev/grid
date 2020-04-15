@@ -33,6 +33,14 @@ class Employees extends React.Component {
     console.log(this.state.employees);
   }
 
+  deleteHandler(event) {
+    const criterion = { id: event.target.textContent.trim() };
+    employeeService.remove(criterion);
+    employeeService.load().then((employees) => {
+      this.setState({ employees });
+    });
+  }
+
   componentDidMount() {
     employeeService.load().then((employees) => {
       this.setState({ employees });
@@ -54,6 +62,7 @@ class Employees extends React.Component {
             department={employee.department}
             email={employee.email}
             filterHandler={this.filterHandler.bind(this)}
+            deleteHandler={this.deleteHandler.bind(this)}
           ></Employee>
         ))}
       </tbody>

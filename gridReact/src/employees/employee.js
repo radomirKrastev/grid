@@ -2,7 +2,16 @@ import React, { Component } from "react";
 
 class Employee extends Component {
   render() {
-    const { id, first_name, last_name, email, job_title, department, filterHandler } = this.props;
+    const {
+      id,
+      first_name,
+      last_name,
+      email,
+      job_title,
+      department,
+      filterHandler,
+      deleteHandler
+    } = this.props;
 
     // "id":2,"first_name":"Deb","last_name":"Nielson",
     // "email":"dnielson1@cpanel.net","job_title":"Developer I","department":"Legal"
@@ -12,7 +21,9 @@ class Employee extends Component {
     return (
       <tr>
         <td>
-          <button className="delete">{id}</button>
+          <button onClick={deleteHandler} className="delete">
+            {id}
+          </button>
         </td>
         <td>{first_name}</td>
         <td>{last_name}</td>
