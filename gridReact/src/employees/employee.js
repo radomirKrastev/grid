@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { filter } from "minimatch";
 
 class Employee extends Component {
   render() {
@@ -23,7 +22,7 @@ class Employee extends Component {
         <td>{job_title}</td>
         <td>
           <button onClick={filterHandler} className="filter">
-            {department}{" "}
+            {department}
           </button>
         </td>
       </tr>

@@ -10,30 +10,34 @@ class Employees extends React.Component {
     super(props);
 
     this.state = {
-      employees: null
+      employees: null,
+      filtered: false
     };
   }
 
   filterHandler(event) {
-    const filter = { criterion: event.target.textContent.trim() };
+    if (!this.state.filtered) {
+      const filter = { criterion: event.target.textContent.trim() };
 
-    employeeService.filter(filter);
+      employeeService.filter(filter).then((employees) => {
+        this.setState({ employees });
+        this.setState({ filtered: true });
+      });
+    } else {
+      employeeService.load().then((employees) => {
+        this.setState({ employees });
+        this.setState({ filtered: false });
+      });
+    }
 
-    employeeService.load().then((employees) => {
-      this.setState({ employees });
-    });
+    console.log(this.state.employees);
   }
-  //   textInput = null;
 
   componentDidMount() {
     employeeService.load().then((employees) => {
       this.setState({ employees });
     });
   }
-
-  //   inputChangeHandler = (e) => {
-  //     console.log(e.target.value);
-  //   };
 
   render() {
     const { employees } = this.state;
