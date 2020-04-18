@@ -1,7 +1,4 @@
 import React from "react";
-// import PropTypes from 'prop-types';
-
-// import './Posts.css';
 import Employee from "./employee";
 import employeeService from "../services/services";
 
@@ -17,9 +14,9 @@ class Employees extends React.Component {
 
   filterHandler(event) {
     if (!this.state.filtered) {
-      const filter = { criterion: event.target.textContent.trim() };
+      const filter = event.target.textContent.trim();
 
-      employeeService.filter(filter).then((employees) => {
+      employeeService.load(filter).then((employees) => {
         this.setState({ employees });
         this.setState({ filtered: true });
       });
@@ -29,13 +26,11 @@ class Employees extends React.Component {
         this.setState({ filtered: false });
       });
     }
-
-    console.log(this.state.employees);
   }
 
   deleteHandler(event) {
-    const criterion = { id: event.target.textContent.trim() };
-    employeeService.remove(criterion);
+    const id = event.target.textContent.trim();
+    employeeService.remove(id);
     employeeService.load().then((employees) => {
       this.setState({ employees });
     });
@@ -75,9 +70,5 @@ class Employees extends React.Component {
     );
   }
 }
-
-// Posts.propTypes = {
-//   limit: PropTypes.number
-// };
 
 export default Employees;

@@ -2,8 +2,9 @@ const controllers = require("../controllers");
 const router = require("express").Router();
 
 router.get("/", controllers.employee.get);
-router.post("/filter", controllers.employee.post.filter);
-router.post("/remove", controllers.employee.post.remove);
+router.delete("/:id", controllers.employee.delete);
+// router.post("/filter", controllers.employee.post.filter);
+// router.post("/remove", controllers.employee.post.remove);
 
 // router.post('/register', controllers.user.post.register);
 
