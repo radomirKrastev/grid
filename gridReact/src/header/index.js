@@ -6,6 +6,26 @@ class Header extends React.Component {
     console.log(criterion);
   }
 
+  // function render(title, Component) {
+  //   return function() {
+  //     return (
+  //       <Main title={title}>
+  //         <Component />
+  //       </Main>
+  //     );
+  //   };
+  // }
+
+  renderTh(handler, sortby, text) {
+    return (
+      <th>
+        <button onClick={this.clickHandler} className="sort" data-sortby="id">
+          Identification
+        </button>
+      </th>
+    );
+  }
+
   render() {
     return (
       <thead>

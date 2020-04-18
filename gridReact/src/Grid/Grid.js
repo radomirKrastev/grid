@@ -1,16 +1,14 @@
 import React from "react";
-import Employee from "./employee";
+import Header from "../header";
+import "./Grid.css";
+import Employees from "../TBody/TBody";
 import employeeService from "../services/services";
 
-class Employees extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      employees: null,
-      filtered: false
-    };
-  }
+class Grid extends React.Component {
+  state = {
+    employees: null,
+    filtered: false
+  };
 
   filterHandler(event) {
     if (!this.state.filtered) {
@@ -45,30 +43,18 @@ class Employees extends React.Component {
   render() {
     const { employees } = this.state;
 
-    return employees ? (
-      <tbody>
-        {employees.map((employee) => (
-          <Employee
-            key={employee.id}
-            id={employee.id}
-            first_name={employee.first_name}
-            last_name={employee.last_name}
-            job_title={employee.job_title}
-            department={employee.department}
-            email={employee.email}
-            filterHandler={this.filterHandler.bind(this)}
-            deleteHandler={this.deleteHandler.bind(this)}
-          ></Employee>
-        ))}
-      </tbody>
-    ) : (
-      <tbody>
-        <tr>
-          <td>Loading...</td>
-        </tr>
-      </tbody>
+    return (
+      <table>
+        <Header />
+        <Employees
+          gridState={this}
+          employees={employees}
+          filterHandler={this.filterHandler.bind(this)}
+          deleteHandler={this.deleteHandler.bind(this)}
+        />
+      </table>
     );
   }
 }
 
-export default Employees;
+export default Grid;

@@ -13,11 +13,6 @@ class Employee extends Component {
       deleteHandler
     } = this.props;
 
-    // "id":2,"first_name":"Deb","last_name":"Nielson",
-    // "email":"dnielson1@cpanel.net","job_title":"Developer I","department":"Legal"
-
-    // handleFilter = (event) => {};
-
     return (
       <tr>
         <td>
