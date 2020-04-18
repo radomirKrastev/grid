@@ -1,8 +1,13 @@
 const employeeService = {
-  load: function(filter) {
-    return fetch(`http://localhost:9999${filter ? `?filter=${filter}` : ""}`).then((res) =>
-      res.json()
-    );
+  load: function(filter, order) {
+    let glue = "";
+    filter && order ? (glue = "&") : (glue = "");
+
+    return fetch(
+      `http://localhost:9999${filter || order ? "?" : ""}${
+        filter ? `filter=${filter}` : ""
+      }${glue}${order ? `order=${order}` : ""}`
+    ).then((res) => res.json());
   },
   // filter: function(criterion) {
   //   return fetch(`http://localhost:9999/filter`, {

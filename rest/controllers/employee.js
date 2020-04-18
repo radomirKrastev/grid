@@ -3,14 +3,25 @@ const models = require("../models");
 module.exports = {
   get: (req, res, next) => {
     const filter = req.query.filter;
+    const order = req.query.order;
     console.log(filter);
-    filter
-      ? models.Employee.find({ department: `${filter}` })
-          .then((employees) => res.send(employees))
-          .catch(next)
-      : models.Employee.find()
-          .then((employees) => res.send(employees))
-          .catch(next);
+    console.log(order);
+
+    const sortObject = {};
+    sortObject[order] = "asc";
+
+    (filter ? models.Employee.find({ department: `${filter}` }) : models.Employee.find())
+      .sort(sortObject)
+      .then((employees) => res.send(employees))
+      .catch(next);
+
+    // filter
+    //   ? models.Employee.find({ department: `${filter}` })
+    //       .then((employees) => res.send(employees))
+    //       .catch(next)
+    //   : models.Employee.find()
+    //       .then((employees) => res.send(employees))
+    //       .catch(next);
   },
 
   // post: {

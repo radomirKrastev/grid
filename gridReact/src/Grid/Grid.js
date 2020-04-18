@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "../header";
+import Header from "../THead";
 import "./Grid.css";
 import Employees from "../TBody/TBody";
 import employeeService from "../services/services";
@@ -7,29 +7,31 @@ import employeeService from "../services/services";
 class Grid extends React.Component {
   state = {
     employees: null,
-    filtered: false
+    filterBy: null
   };
 
   filterHandler(event) {
-    if (!this.state.filtered) {
-      const filter = event.target.textContent.trim();
+    const filter = event.target.textContent.trim();
+    this.state.filterBy ? this.setState({ filterBy: null }) : this.setState({ filterBy: filter });
 
-      employeeService.load(filter).then((employees) => {
+    (this.state.filterBy ? employeeService.load(null) : employeeService.load(filter)).then(
+      (employees) => {
         this.setState({ employees });
-        this.setState({ filtered: true });
-      });
-    } else {
-      employeeService.load().then((employees) => {
-        this.setState({ employees });
-        this.setState({ filtered: false });
-      });
-    }
+      }
+    );
   }
 
   deleteHandler(event) {
     const id = event.target.textContent.trim();
     employeeService.remove(id);
     employeeService.load().then((employees) => {
+      this.setState({ employees });
+    });
+  }
+
+  sortHandler(event) {
+    const orderBy = event.target.dataset.sortby;
+    employeeService.load(this.state.filterBy, orderBy).then((employees) => {
       this.setState({ employees });
     });
   }
@@ -45,7 +47,7 @@ class Grid extends React.Component {
 
     return (
       <table>
-        <Header />
+        <Header sortHandler={this.sortHandler.bind(this)} />
         <Employees
           gridState={this}
           employees={employees}
