@@ -1,7 +1,7 @@
 import React from "react";
 
-class Header extends React.Component {
-  renderTh(handler, sortby, text) {
+function Header(props) {
+  function renderTh(handler, sortby, text) {
     return (
       <th>
         <button onClick={handler} className="sort" data-sortby={sortby}>
@@ -11,22 +11,20 @@ class Header extends React.Component {
     );
   }
 
-  render() {
-    const { sortHandler } = this.props;
+  const { sortHandler } = props;
 
-    return (
-      <thead>
-        <tr>
-          {this.renderTh(sortHandler, "id", "Identification")}
-          {this.renderTh(sortHandler, "first_name", "First Name")}
-          {this.renderTh(sortHandler, "last_name", "Last Name")}
-          {this.renderTh(sortHandler, "email", "Email")}
-          {this.renderTh(sortHandler, "job_title", "Position")}
-          {this.renderTh(sortHandler, "department", "Department")}
-        </tr>
-      </thead>
-    );
-  }
+  return (
+    <thead>
+      <tr>
+        {renderTh(sortHandler, "id", "Identification")}
+        {renderTh(sortHandler, "first_name", "First Name")}
+        {renderTh(sortHandler, "last_name", "Last Name")}
+        {renderTh(sortHandler, "email", "Email")}
+        {renderTh(sortHandler, "job_title", "Position")}
+        {renderTh(sortHandler, "department", "Department")}
+      </tr>
+    </thead>
+  );
 }
 
 export default Header;

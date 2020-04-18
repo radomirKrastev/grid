@@ -1,5 +1,4 @@
 const router = require("../routes");
-// const employeeController = require("../controllers");
 
 module.exports = (app) => {
   app.use("/", router.employee);

@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../THead";
 import "./Grid.css";
 import Employees from "../TBody/TBody";
-import employeeService from "../services/services";
+import restService from "../services/services";
 
 class Grid extends React.Component {
   state = {
@@ -16,8 +16,8 @@ class Grid extends React.Component {
     this.state.filterBy ? this.setState({ filterBy: null }) : this.setState({ filterBy: filter });
 
     (this.state.filterBy
-      ? employeeService.load(null, this.state.orderedBy)
-      : employeeService.load(filter, this.state.orderedBy)
+      ? restService.load(null, this.state.orderedBy)
+      : restService.load(filter, this.state.orderedBy)
     ).then((employees) => {
       this.setState({ employees });
     });
@@ -25,22 +25,22 @@ class Grid extends React.Component {
 
   deleteHandler(event) {
     const id = event.target.textContent.trim();
-    employeeService.remove(id);
-    employeeService.load(this.state.filterBy, this.state.orderedBy).then((employees) => {
+    restService.remove(id);
+    restService.load(this.state.filterBy, this.state.orderedBy).then((employees) => {
       this.setState({ employees });
     });
   }
 
   sortHandler(event) {
     const orderBy = event.target.dataset.sortby;
-    employeeService.load(this.state.filterBy, orderBy).then((employees) => {
+    restService.load(this.state.filterBy, orderBy).then((employees) => {
       this.setState({ employees });
       this.setState({ orderedBy: orderBy });
     });
   }
 
   componentDidMount() {
-    employeeService.load().then((employees) => {
+    restService.load().then((employees) => {
       this.setState({ employees });
     });
   }
