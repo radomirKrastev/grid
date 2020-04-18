@@ -1,5 +1,8 @@
 const employeeService = {
   load: function(filter, order) {
+    console.log(filter);
+    console.log(order);
+
     let glue = "";
     filter && order ? (glue = "&") : (glue = "");
 
