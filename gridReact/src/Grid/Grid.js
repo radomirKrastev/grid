@@ -1,66 +1,57 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../THead";
 import "./Grid.css";
 import Employees from "../TBody/TBody";
 import restService from "../services/services";
 
-class Grid extends React.Component {
-  state = {
-    employees: null,
-    filterBy: null,
-    orderedBy: "id"
+function Grid() {
+  const [employees, updateEmployees] = useState(null);
+  const [filterBy, changeFilter] = useState(null);
+  const [orderedBy, changeOrder] = useState("id");
+
+  useEffect(() => {
+    restService.load().then((employeesToLoad) => {
+      updateEmployees(employeesToLoad);
+    });
+  }, []);
+
+  const filterHandler = (event) => {
+    const filter = event.target.textContent.trim();
+    filterBy ? changeFilter(null) : changeFilter(filter);
+
+    (filterBy ? restService.load(null, orderedBy) : restService.load(filter, orderedBy)).then(
+      (newEmployees) => {
+        updateEmployees(newEmployees);
+      }
+    );
   };
 
-  filterHandler(event) {
-    const filter = event.target.textContent.trim();
-    this.state.filterBy ? this.setState({ filterBy: null }) : this.setState({ filterBy: filter });
-
-    (this.state.filterBy
-      ? restService.load(null, this.state.orderedBy)
-      : restService.load(filter, this.state.orderedBy)
-    ).then((employees) => {
-      this.setState({ employees });
+  const sortHandler = (event) => {
+    const orderBy = event.target.dataset.sortby;
+    restService.load(filterBy, orderBy).then((newEmployees) => {
+      updateEmployees(newEmployees);
+      changeOrder(orderBy);
     });
-  }
+  };
 
-  deleteHandler(event) {
+  const deleteHandler = (event) => {
     const id = event.target.textContent.trim();
     restService.remove(id);
-    restService.load(this.state.filterBy, this.state.orderedBy).then((employees) => {
-      this.setState({ employees });
+    restService.load(filterBy, orderedBy).then((newEmployees) => {
+      updateEmployees(newEmployees);
     });
-  }
+  };
 
-  sortHandler(event) {
-    const orderBy = event.target.dataset.sortby;
-    restService.load(this.state.filterBy, orderBy).then((employees) => {
-      this.setState({ employees });
-      this.setState({ orderedBy: orderBy });
-    });
-  }
-
-  componentDidMount() {
-    restService.load().then((employees) => {
-      this.setState({ employees });
-    });
-  }
-
-  render() {
-    const { employees } = this.state;
-
-    return (
-      <table>
-        <h1>GridTiele</h1>
-        <Header sortHandler={this.sortHandler.bind(this)} />
-        <Employees
-          gridState={this}
-          employees={employees}
-          filterHandler={this.filterHandler.bind(this)}
-          deleteHandler={this.deleteHandler.bind(this)}
-        />
-      </table>
-    );
-  }
+  return (
+    <table>
+      <Header sortHandler={sortHandler} />
+      <Employees
+        employees={employees}
+        filterHandler={filterHandler}
+        deleteHandler={deleteHandler}
+      />
+    </table>
+  );
 }
 
 export default Grid;
