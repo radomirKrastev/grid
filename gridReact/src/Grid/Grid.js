@@ -50,6 +50,7 @@ class Grid extends React.Component {
 
     return (
       <table>
+        <h1>GridTiele</h1>
         <Header sortHandler={this.sortHandler.bind(this)} />
         <Employees
           gridState={this}
