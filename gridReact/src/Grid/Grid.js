@@ -10,28 +10,19 @@ function Grid() {
   const [orderedBy, changeOrder] = useState("id");
 
   useEffect(() => {
-    restService.load().then((employeesToLoad) => {
+    restService.load(filterBy, orderedBy).then((employeesToLoad) => {
       updateEmployees(employeesToLoad);
     });
-  }, []);
+  }, [filterBy, orderedBy]);
 
   const filterHandler = (event) => {
     const filter = event.target.textContent.trim();
     filterBy ? changeFilter(null) : changeFilter(filter);
-
-    (filterBy ? restService.load(null, orderedBy) : restService.load(filter, orderedBy)).then(
-      (newEmployees) => {
-        updateEmployees(newEmployees);
-      }
-    );
   };
 
   const sortHandler = (event) => {
     const orderBy = event.target.dataset.sortby;
-    restService.load(filterBy, orderBy).then((newEmployees) => {
-      updateEmployees(newEmployees);
-      changeOrder(orderBy);
-    });
+    changeOrder(orderBy);
   };
 
   const deleteHandler = (event) => {
